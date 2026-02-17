@@ -29,9 +29,6 @@ jobs:
            IMAGE_URI=${{ steps.login-ecr.outputs.registry }}/strapi-app:${GITHUB_SHA}
            echo "Building image: $IMAGE_URI"
 
-           docker build \
-             -f strapi-app/Dockerfile \
-             -t $IMAGE_URI \
-             strapi-app
+           docker build -f strapi-app/Dockerfile -t my-image-name:$(date +%s) strapi-app
 
            docker push $IMAGE_URI
