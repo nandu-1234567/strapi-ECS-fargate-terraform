@@ -26,7 +26,7 @@ jobs:
 
       - name: Build, Tag, and Push Docker Image
         env:
-          ECR_REGISTRY: ${{ STEPS.LOGIN-ECR.OUTPUTS.REGISTRY }}
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY : strapi-app
           IMAGE_TAG: ${{ GITHUB.SHA }}
         run: |
