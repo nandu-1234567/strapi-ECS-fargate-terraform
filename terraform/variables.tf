@@ -1,4 +1,4 @@
-variable "aws_region" {}
+variable "AWS_REGION" {}
 variable "image_url" {}
 variable "execution_role_arn" {}
 variable "task_role_arn" {}
