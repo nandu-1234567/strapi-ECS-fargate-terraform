@@ -11,10 +11,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -22,12 +22,13 @@ jobs:
 
       - name: Login to ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build, Tag, and Push Docker Image
-         run: |
-           docker build \
-              -f Strapi-app/Dockerfile \
-              -t my-image-name:${{ github.sha }} \
-
-           docker push $IMAGE_URI
+        env:
+          ECR_REGISTRY: ${{ STEPS.LOGIN-ECR.OUTPUTS.REGISTRY }}
+          ECR_REPOSITORY : strapi-app
+          IMAGE_TAG: ${{ GITHUB.SHA }}
+        run: |
+          docker build -f strapi-app/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG strapi-app
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
