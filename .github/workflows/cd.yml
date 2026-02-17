@@ -10,6 +10,11 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+  
+    env:
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+
 
     steps:
       - name: Checkout code
@@ -21,6 +26,11 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+      - name: HARD DEBUG REGION
+        run: |
+          echo "AWS_REGION=$AWS_REGION"
+          echo "AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION"
+
 
       
       - name: Set image URI
