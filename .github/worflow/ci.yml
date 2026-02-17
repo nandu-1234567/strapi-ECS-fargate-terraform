@@ -24,15 +24,14 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build, Tag, and Push Docker Image
-        run: |
-          IMAGE_URI=${{ steps.login-ecr.outputs.registry }}/strapi-app:${GITHUB_SHA}
-          echo "Using image URI: $IMAGE_URI"
+      -- name: Build, Tag, and Push Docker Image
+         run: |
+           IMAGE_URI=${{ steps.login-ecr.outputs.registry }}/strapi-app:${GITHUB_SHA}
+           echo "Building image: $IMAGE_URI"
 
-          docker build \
-            -t $IMAGE_URI \
-            -f strapi-app/Dockerfile \
-            strapi-app
+           docker build \
+             -f strapi-app/Dockerfile \
+             -t $IMAGE_URI \
+             strapi-app
 
-          docker push $IMAGE_URI
-          echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
+           docker push $IMAGE_URI
