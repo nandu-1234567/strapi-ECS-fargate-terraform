@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -26,6 +27,12 @@ jobs:
       - name: Build, Tag, and Push Docker Image
         run: |
           IMAGE_URI=${{ steps.login-ecr.outputs.registry }}/strapi-app:${GITHUB_SHA}
-          docker build -t $IMAGE_URI .
+          echo "Using image URI: $IMAGE_URI"
+
+          docker build \
+            -t $IMAGE_URI \
+            -f strapi-app/Dockerfile \
+            strapi-app
+
           docker push $IMAGE_URI
           echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV

@@ -1,16 +1,23 @@
+# Use official Node.js LTS as base
 FROM node:20
 
-WORKDIR /app
+# Set working directory
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json first (for caching)
+COPY package*.json ./
 
 # Install dependencies
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN npm install --production
 
+# Copy all source files
 COPY . .
 
-# Build Strapi admin panel
-RUN yarn build
+# Build Strapi (optional if you have admin panel)
+RUN npm run build
 
+# Expose Strapi default port
 EXPOSE 1337
 
-CMD ["yarn", "start"]
+# Run Strapi in production
+CMD ["npm", "start"]
