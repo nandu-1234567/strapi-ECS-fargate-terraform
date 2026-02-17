@@ -1,5 +1,5 @@
 provider "aws" {
-  region = var.aws_region
+  region = var.AWS_REGION
 }
 
 resource "aws_ecr_repository" "strapi" {
